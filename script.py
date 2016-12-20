@@ -1,13 +1,13 @@
-#!env python
-
 from __future__ import unicode_literals, print_function
 
 import os
-import sys
 
+import click
 from PIL import Image
 
 FRAME_PX = 16
+
+click.disable_unicode_literals_warning = True
 
 
 def crop_frame(img):
@@ -24,7 +24,9 @@ def resize(img, scale=2):
     return img.resize(newsize, Image.NEAREST)
 
 
-for infile in sys.argv[1:]:
+@click.command()
+@click.argument('infile', type=click.Path(exists=True, dir_okay=False))
+def cli(infile):
     filename, _ = os.path.splitext(infile)
     outfile = filename + '.jpg'
     img = Image.open(infile)
