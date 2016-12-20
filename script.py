@@ -25,9 +25,18 @@ def resize(img, scale=2):
     return img.resize(newsize, Image.NEAREST)
 
 
-def process(infile):
-    filename, _ = os.path.splitext(infile)
-    outfile = filename + '.jpg'
+def ensure_dir(dirname):
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+
+
+def process(infile, outdir=None):
+    dirname, basename = os.path.split(infile)
+    if outdir:
+        ensure_dir(outdir)
+        dirname = outdir
+    filename, _ = os.path.splitext(basename)
+    outfile = os.path.join(dirname, filename + '.jpg')
     click.echo("  {} -> {}".format(infile, outfile))
     img = Image.open(infile)
     img = crop_frame(img)
@@ -37,11 +46,12 @@ def process(infile):
 
 @click.command()
 @click.argument('path', type=click.Path(exists=True))
-def cli(path):
+@click.option('--outdir', '-o', default=None)
+def cli(path, outdir):
     if not os.path.isdir(path):
-        process(path)
+        process(path, outdir=outdir)
     else:
         filenames = glob('{}/*.BMP'.format(path))
         click.echo("{} GameBoy Camera pics found!".format(len(filenames)))
         for filename in filenames:
-            process(filename)
+            process(filename, outdir=outdir)
