@@ -22,12 +22,10 @@ The problem with this is that it will, most likely, destroy the crispiness of th
 
 ## Install
 
-For now, simply clone the repo and pip install it within a `virtualenv`.
-
-```bash
+```shell
 git clone https://github.com/OmeGak/gbpix.git
 cd gbpix
-pip install --editable .
+pipenv install
 ```
 
 ## Usage
