@@ -69,7 +69,7 @@ def cli(path, force, archivedir, outdir):
     if not os.path.isdir(path):
         process(path, force=force, archivedir=archivedir, outdir=outdir)
     else:
-        filenames = glob('{}/*.BMP'.format(path))
+        filenames = sorted(glob('{}/*.BMP'.format(path)))
         click.echo("{} GameBoy Camera pics found!".format(len(filenames)))
         for filename in filenames:
             process(filename, force=force, archivedir=archivedir, outdir=outdir)
